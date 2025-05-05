@@ -20,6 +20,13 @@ import { clsx } from 'clsx';
 const DashboardLayout: React.FC = () => {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
+  type NavItem = {
+    to: string;
+    icon: React.ReactNode;
+    text: string;
+    allowedRoles: string[];
+  };
+  
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isOffline, setIsOffline] = useState(false);
@@ -43,17 +50,14 @@ const DashboardLayout: React.FC = () => {
     navigate('/login');
   };
 
-  const navItems = [
-    { to: '/dashboard/pos', icon: <ShoppingCart />, text: 'POS' },
-    { to: '/dashboard/inventory', icon: <Package />, text: 'Inventory' },
-    { to: '/dashboard/customers', icon: <Users />, text: 'Customers' },
-    { to: '/dashboard/reports', icon: <BarChart />, text: 'Reports' },
-    { to: '/dashboard/settings', icon: <Settings />, text: 'Settings' },
-    ...(user?.role === 'ADMIN' ? [
-      { to: '/dashboard/admin', icon: <Shield />, text: 'Admin' }
-    ] : [])
+  const navItems: NavItem[] = [
+    { to: '/dashboard/pos', icon: <ShoppingCart />, text: 'POS', allowedRoles: ['ADMIN', 'CASHIER'] },
+    { to: '/dashboard/inventory', icon: <Package />, text: 'Inventory', allowedRoles: ['ADMIN' ] },
+    { to: '/dashboard/customers', icon: <Users />, text: 'Customers', allowedRoles: ['ADMIN' ] },
+    { to: '/dashboard/reports', icon: <BarChart />, text: 'Reports', allowedRoles: ['ADMIN'] },
+    { to: '/dashboard/settings', icon: <Settings />, text: 'Settings', allowedRoles: ['ADMIN'] },
+    { to: '/dashboard/admin', icon: <Shield />, text: 'Admin', allowedRoles: ['ADMIN'] }
   ];
-
 
 
   return (
